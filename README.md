@@ -21,7 +21,7 @@ infra/   AWS CDK stack (S3, CloudFront, ACM, Route 53, deploy role, budget alert
 
 ## Work on the site locally
 
-Needs Node 22.
+Needs Node 22.23.4 or newer (CI uses Node 24).
 
 ```bash
 cd site
