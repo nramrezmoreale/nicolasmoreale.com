@@ -3,7 +3,7 @@ name: Deploy site
 on:
   push:
     branches: [main]
-    paths: ['site/**', '.github/workflows/deploy.yml']
+    paths: ['site/**', '.nvmrc', '.github/workflows/deploy.yml']
   workflow_dispatch:
 
 permissions:
