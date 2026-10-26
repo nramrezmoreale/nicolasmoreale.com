@@ -1,0 +1,139 @@
+---
+import Base from '../layouts/Base.astro';
+import CallToAction from '../components/CallToAction.astro';
+import { site } from '../site.config';
+---
+
+<Base
+  title="About"
+  description="Nicolás Moreale is an AWS engineer in Buenos Aires working on Amazon Connect contact centers, cloud data pipelines and analytics."
+>
+  <header class="wrap page-head">
+    <h1>About</h1>
+    <p>
+      I'm Nicolás, an AWS engineer in Buenos Aires. I build and support Amazon Connect contact centers
+      and the data systems around them.
+    </p>
+  </header>
+
+  <div class="wrap columns">
+    <div class="prose">
+      <p>
+        Since late 2025 I've worked on Amazon Connect for pharmaceutical patient-support programs: contact
+        flows and routing, voicemail, Salesforce Service Cloud Voice, Lambda and DynamoDB integrations,
+        and the reporting on top. It's regulated work. A call that lands in the wrong queue or a service
+        level that's calculated the wrong way is a real problem, so I test with real calls and write
+        everything down.
+      </p>
+      <p>
+        Before that I worked on data, reporting and cloud operations at Cognizant, and on process
+        automation at IBM. I have a Bachelor's degree in Data Science from the University of the City of
+        Buenos Aires, and that's the direction I'm taking this work: contact centers produce a lot of
+        data, and most teams use very little of it.
+      </p>
+      <p>
+        I work in English and Spanish, and also speak French, Italian and German. Buenos Aires keeps me on
+        US hours, with a few hours of overlap with Europe every morning.
+      </p>
+
+      <h2>How I work</h2>
+      <ul>
+        <li>Small, fixed-scope engagements with a written scope and price up front.</li>
+        <li>Access through an IAM role you create and can revoke. No shared passwords.</li>
+        <li>Changes tested before they reach production, and documented after.</li>
+        <li>No client names in my case studies without permission.</li>
+      </ul>
+    </div>
+
+    <aside class="facts ui" aria-label="Background">
+      <section>
+        <h2>Experience</h2>
+        <dl>
+          <div>
+            <dt>Syneos Health</dt>
+            <dd>AWS and Amazon Connect engineer, 2025 to now</dd>
+          </div>
+          <div>
+            <dt>Cognizant</dt>
+            <dd>Data engineer, 2024 to 2025</dd>
+          </div>
+          <div>
+            <dt>IBM</dt>
+            <dd>Automation developer, 2021 to 2022</dd>
+          </div>
+        </dl>
+      </section>
+      <section>
+        <h2>Education and credentials</h2>
+        <ul>
+          <li>Bachelor's degree in Data Science, University of the City of Buenos Aires</li>
+          <li>Information Systems Engineering, Universidad Tecnológica Nacional</li>
+          <li>Machine Learning Specialization, DeepLearning.AI and Stanford Online</li>
+          <li>Google Cloud: Building Batch Data Pipelines; Modernizing Data Lakes and Data Warehouses</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Elsewhere</h2>
+        <ul>
+          <li><a href={site.linkedin}>LinkedIn</a></li>
+          {site.github && <li><a href={site.github}>GitHub</a></li>}
+          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        </ul>
+      </section>
+    </aside>
+  </div>
+
+  <CallToAction />
+</Base>
+
+<style>
+  .columns {
+    display: grid;
+    gap: 3rem 4rem;
+  }
+
+  @media (min-width: 60rem) {
+    .columns {
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+
+  .facts {
+    display: grid;
+    gap: 2rem;
+    font-size: 0.98rem;
+  }
+
+  .facts h2 {
+    font-size: 1.05rem;
+    font-stretch: 92%;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 0.75rem;
+  }
+
+  .facts dl {
+    margin: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .facts dt {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .facts dd {
+    margin: 0.1rem 0 0;
+    color: var(--muted);
+  }
+
+  .facts ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+</style>

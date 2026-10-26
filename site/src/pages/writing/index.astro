@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const articles = (await getCollection('writing', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const fmt = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' });
+---
+
+<Base
+  title="Writing"
+  description="Notes on Amazon Connect, contact-center reporting and AWS, from real projects."
+>
+  <header class="wrap page-head">
+    <h1>Writing</h1>
+    <p>Notes on Amazon Connect, contact-center reporting and AWS, written from real projects.</p>
+  </header>
+
+  <div class="wrap">
+    <ul class="articles">
+      {
+        articles.map((a) => (
+          <li>
+            <h2>
+              <a href={`/writing/${a.id}/`}>{a.data.title}</a>
+            </h2>
+            <p>{a.data.description}</p>
+            <p class="date ui">
+              <time datetime={a.data.pubDate.toISOString()}>{fmt.format(a.data.pubDate)}</time>
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .articles {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  li {
+    padding-block: 1.75rem;
+    border-bottom: 1px solid var(--rule);
+    max-width: 46rem;
+  }
+
+  h2 {
+    font-size: var(--step-2);
+  }
+
+  h2 a {
+    color: var(--ink);
+    text-decoration-color: var(--rule);
+  }
+
+  h2 a:hover {
+    text-decoration-color: var(--accent);
+  }
+
+  li p {
+    margin-top: 0.6rem;
+  }
+
+  .date {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+</style>

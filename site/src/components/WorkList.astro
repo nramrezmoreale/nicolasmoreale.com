@@ -1,0 +1,81 @@
+---
+import { getCollection } from 'astro:content';
+
+const items = (await getCollection('work', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<ul class="work-list">
+  {
+    items.map((item) => (
+      <li>
+        <h3>
+          <a href={`/work/${item.id}/`}>{item.data.title}</a>
+        </h3>
+        <p class="summary">{item.data.summary}</p>
+        <p class="context ui">{item.data.context}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .work-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  li {
+    display: grid;
+    gap: 0.5rem 3rem;
+    padding-block: 1.75rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  h3 a {
+    color: var(--ink);
+    text-decoration: none;
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-size: 0% 2px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 180ms ease;
+  }
+
+  h3 a:hover,
+  h3 a:focus-visible {
+    background-size: 100% 2px;
+  }
+
+  .summary {
+    max-width: 40rem;
+  }
+
+  .context {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  @media (min-width: 52rem) {
+    li {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+      grid-template-areas:
+        'title summary'
+        'context summary';
+      align-items: start;
+    }
+    h3 {
+      grid-area: title;
+    }
+    .summary {
+      grid-area: summary;
+      grid-row: 1 / span 2;
+    }
+    .context {
+      grid-area: context;
+    }
+  }
+</style>

@@ -1,0 +1,16 @@
+{
+  "app": "npx tsx bin/site.ts",
+  "watch": {
+    "include": [
+      "bin/**",
+      "lib/**"
+    ]
+  },
+  "context": {
+    "domainName": "nicolasmoreale.com",
+    "hostedZoneId": "Z08798341QR3RWEBRB69A",
+    "githubRepo": "nramrezmoreale/nicolasmoreale.com",
+    "createGithubOidcProvider": true,
+    "monthlyBudgetUsd": 5
+  }
+}

@@ -1,0 +1,211 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import FlowDiagram from '../components/FlowDiagram.astro';
+import WorkList from '../components/WorkList.astro';
+import CallToAction from '../components/CallToAction.astro';
+import { services, site } from '../site.config';
+
+const articles = (await getCollection('writing', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const latest = articles[0];
+---
+
+<Base>
+  <section class="hero wrap" aria-labelledby="hero-heading">
+    <div class="hero-text">
+      <h1 id="hero-heading">I build, fix and modernize Amazon Connect contact centers.</h1>
+      <p class="lede">
+        Independent AWS engineer in {site.location.split(',')[0]}. I work on contact flows, routing,
+        Salesforce Service Cloud Voice and the reporting behind them, for teams in the US and Europe.
+      </p>
+      <div class="actions">
+        <a class="button" href={site.bookingUrl}>Book a 30-minute call</a>
+        <a class="button button--quiet" href="/work/">Read the case studies</a>
+      </div>
+      <p class="note ui">Available during US business hours. I work in English and Spanish.</p>
+    </div>
+    <div class="hero-figure">
+      <FlowDiagram />
+    </div>
+  </section>
+
+  <section class="wrap block" aria-labelledby="services-heading">
+    <div class="block-head">
+      <h2 id="services-heading">Work I take on</h2>
+      <a class="ui" href="/services/">What each one includes</a>
+    </div>
+    <ul class="services">
+      {
+        services.map((s) => (
+          <li>
+            <h3>{s.name}</h3>
+            <p>{s.summary}</p>
+            <p class="format ui">{s.format}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="wrap block" aria-labelledby="work-heading">
+    <div class="block-head">
+      <h2 id="work-heading">Recent work</h2>
+      <a class="ui" href="/work/">All case studies</a>
+    </div>
+    <WorkList />
+  </section>
+
+  {
+    latest && (
+      <section class="wrap block" aria-labelledby="writing-heading">
+        <div class="block-head">
+          <h2 id="writing-heading">Latest writing</h2>
+          <a class="ui" href="/writing/">All articles</a>
+        </div>
+        <article class="latest">
+          <h3>
+            <a href={`/writing/${latest.id}/`}>{latest.data.title}</a>
+          </h3>
+          <p>{latest.data.description}</p>
+        </article>
+      </section>
+    )
+  }
+
+  <section class="wrap block about" aria-labelledby="about-heading">
+    <h2 id="about-heading">Why work with me</h2>
+    <div class="about-grid">
+      <p>
+        I spend my days inside Amazon Connect instances for regulated, pharmaceutical contact centers,
+        where a misrouted call or a wrong number on a report has consequences. I care about the
+        unglamorous parts: holiday tables, voicemail delivery, metric definitions, and documentation
+        someone can follow after I leave.
+      </p>
+      <p>
+        I also have a degree in data science, which is the direction I'm taking this work. Contact
+        centers produce a lot of data, and most teams use very little of it.
+      </p>
+      <p><a href="/about/">More about me</a></p>
+    </div>
+  </section>
+
+  <CallToAction />
+</Base>
+
+<style>
+  .hero {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4rem);
+    padding-block: clamp(3rem, 8vw, 6.5rem) clamp(2rem, 6vw, 4rem);
+    align-items: center;
+  }
+
+  .lede {
+    margin-top: 1.5rem;
+    max-width: 34rem;
+    font-size: var(--step-1);
+    line-height: 1.5;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .note {
+    margin-top: 1.25rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  @media (min-width: 64rem) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    }
+  }
+
+  .block {
+    margin-top: clamp(3.5rem, 9vw, 6rem);
+  }
+
+  .block-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .services {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .services li {
+    display: grid;
+    gap: 0.4rem 3rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .services p {
+    max-width: 38rem;
+  }
+
+  .format {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  @media (min-width: 52rem) {
+    .services li {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr) minmax(0, 0.6fr);
+      align-items: baseline;
+    }
+    .format {
+      text-align: right;
+    }
+  }
+
+  .latest {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.75rem;
+    max-width: 46rem;
+  }
+
+  .latest h3 a {
+    color: var(--ink);
+    text-decoration-color: var(--rule);
+  }
+
+  .latest h3 a:hover {
+    text-decoration-color: var(--accent);
+  }
+
+  .latest p {
+    margin-top: 0.6rem;
+  }
+
+  .about-grid {
+    display: grid;
+    gap: 1.25rem 3rem;
+    margin-top: 1.5rem;
+  }
+
+  .about-grid p {
+    max-width: 36rem;
+  }
+
+  @media (min-width: 52rem) {
+    .about-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

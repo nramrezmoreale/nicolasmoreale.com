@@ -1,0 +1,51 @@
+---
+import { site } from '../site.config';
+
+interface Props {
+  heading?: string;
+}
+
+const { heading = "Tell me what's breaking" } = Astro.props;
+---
+
+<section class="cta" aria-labelledby="cta-heading">
+  <div class="wrap">
+    <div class="inner">
+    <h2 id="cta-heading">{heading}</h2>
+    <p>
+      A 30-minute call is enough to tell whether I can help and roughly what it would take. Come as
+      you are: no slides or documents needed.
+    </p>
+    <div class="actions">
+      <a class="button" href={site.bookingUrl}>Book a 30-minute call</a>
+      <a class="button button--quiet" href={`mailto:${site.email}`}>Email {site.email}</a>
+    </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    margin-top: clamp(4rem, 10vw, 7rem);
+  }
+
+  .inner {
+    display: grid;
+    gap: 1.25rem;
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+    border-top: 3px solid var(--ink);
+  }
+
+  p {
+    max-width: 36rem;
+    font-size: var(--step-1);
+    line-height: 1.5;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+</style>

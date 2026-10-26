@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../site.config';
+---
+
+<Base title="Contact" description="Book a 30-minute call or email Nicolás Moreale about your Amazon Connect or AWS project.">
+  <header class="wrap page-head">
+    <h1>Contact</h1>
+    <p>
+      The fastest way to start is a 30-minute call. If you'd rather write first, email me and I'll reply
+      within one business day.
+    </p>
+  </header>
+
+  <div class="wrap columns">
+    <section class="option" aria-labelledby="call-heading">
+      <h2 id="call-heading">Book a call</h2>
+      <p>Pick a time that suits you. The call is free and there's no obligation.</p>
+      <a class="button" href={site.bookingUrl}>Book a 30-minute call</a>
+    </section>
+
+    <section class="option" aria-labelledby="email-heading">
+      <h2 id="email-heading">Email</h2>
+      <p>
+        It helps to include what you're running (Amazon Connect, Salesforce Service Cloud Voice,
+        anything else), what's going wrong or what you want built, and any deadline.
+      </p>
+      <a class="button button--quiet" href={`mailto:${site.email}`}>{site.email}</a>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .columns {
+    display: grid;
+    gap: 2.5rem 4rem;
+  }
+
+  @media (min-width: 52rem) {
+    .columns {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .option {
+    border-top: 3px solid var(--ink);
+    padding-top: 1.25rem;
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+    align-content: start;
+  }
+
+  .option h2 {
+    font-size: var(--step-2);
+  }
+
+  .option p {
+    max-width: 30rem;
+  }
+</style>

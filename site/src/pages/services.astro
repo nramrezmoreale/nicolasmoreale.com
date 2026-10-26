@@ -1,0 +1,173 @@
+---
+import Base from '../layouts/Base.astro';
+import CallToAction from '../components/CallToAction.astro';
+import { services } from '../site.config';
+---
+
+<Base
+  title="Services"
+  description="Amazon Connect health checks, builds and fixes, reporting and data, AI in the contact center, and ongoing support."
+>
+  <header class="wrap page-head">
+    <h1>Services</h1>
+    <p>
+      Five ways to work together, from a two-week review to ongoing support. Every engagement starts
+      with a 30-minute call and a written scope with a fixed price.
+    </p>
+  </header>
+
+  <div class="wrap">
+    {
+      services.map((s) => (
+        <section class="service" id={s.slug} aria-labelledby={`${s.slug}-heading`}>
+          <div class="service-head">
+            <h2 id={`${s.slug}-heading`}>{s.name}</h2>
+            <p class="format ui">{s.format}</p>
+          </div>
+          <div class="service-body">
+            <p>{s.summary}</p>
+            <ul>
+              {s.includes.map((line) => (
+                <li>{line}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ))
+    }
+
+    <section class="extra" aria-labelledby="who-heading">
+      <h2 id="who-heading">Who I work with</h2>
+      <ul class="who">
+        <li>
+          <h3>Contact-center and IT teams</h3>
+          <p>Running Amazon Connect and short on people who know it well.</p>
+        </li>
+        <li>
+          <h3>AWS partners</h3>
+          <p>Who need another Connect engineer on a delivery, under your brand or mine.</p>
+        </li>
+        <li>
+          <h3>Salesforce teams</h3>
+          <p>Adding Service Cloud Voice and needing the Connect side done properly.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="extra" aria-labelledby="how-heading">
+      <h2 id="how-heading">How it works</h2>
+      <ol class="steps">
+        <li>
+          <h3>A 30-minute call</h3>
+          <p>You describe the problem. I ask questions and tell you honestly whether I'm a fit.</p>
+        </li>
+        <li>
+          <h3>A written scope</h3>
+          <p>Within two business days: what I'll do, what you'll get, the timeline and a fixed price.</p>
+        </li>
+        <li>
+          <h3>The work</h3>
+          <p>
+            In your AWS account, through an IAM role you create and can revoke at any time. Changes go
+            to a test environment first when you have one.
+          </p>
+        </li>
+        <li>
+          <h3>Handover</h3>
+          <p>Documentation your team can follow, and a walkthrough of everything I changed.</p>
+        </li>
+      </ol>
+    </section>
+  </div>
+
+  <CallToAction />
+</Base>
+
+<style>
+  .service {
+    display: grid;
+    gap: 1rem 3rem;
+    padding-block: 2.25rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .format {
+    margin-top: 0.5rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .service-body > p {
+    max-width: 38rem;
+    color: var(--ink);
+  }
+
+  .service-body ul {
+    margin: 1rem 0 0;
+    padding-left: 1.2em;
+  }
+
+  .service-body li + li {
+    margin-top: 0.3rem;
+  }
+
+  @media (min-width: 52rem) {
+    .service {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
+    }
+  }
+
+  .extra {
+    margin-top: clamp(3.5rem, 8vw, 5rem);
+  }
+
+  .who,
+  .steps {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem 2.5rem;
+  }
+
+  .who h3,
+  .steps h3 {
+    font-size: 1.15rem;
+  }
+
+  .who p,
+  .steps p {
+    margin-top: 0.35rem;
+  }
+
+  .steps {
+    counter-reset: step;
+  }
+
+  .steps li {
+    counter-increment: step;
+    border-top: 3px solid var(--ink);
+    padding-top: 1rem;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    display: block;
+    margin-bottom: 0.4rem;
+    color: var(--accent);
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    font-stretch: 80%;
+    line-height: 1;
+  }
+
+  @media (min-width: 52rem) {
+    .who {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .steps {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

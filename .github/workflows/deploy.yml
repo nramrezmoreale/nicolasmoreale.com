@@ -1,0 +1,50 @@
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+    paths: ['site/**', '.github/workflows/deploy.yml']
+  workflow_dispatch:
+
+permissions:
+  id-token: write # lets the job sign in to AWS with OIDC, no stored keys
+  contents: read
+
+concurrency:
+  group: deploy-site
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - run: npm ci
+      - run: npm run build
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: us-east-2
+
+      - name: Upload fingerprinted assets (cached for a year)
+        run: aws s3 sync dist/_astro "s3://${{ vars.SITE_BUCKET }}/_astro" --cache-control "public, max-age=31536000, immutable"
+
+      - name: Upload pages and everything else (cached for 5 minutes)
+        run: aws s3 sync dist "s3://${{ vars.SITE_BUCKET }}" --delete --exclude "_astro/*" --cache-control "public, max-age=300"
+
+      - name: Remove assets no page uses any more
+        run: aws s3 sync dist/_astro "s3://${{ vars.SITE_BUCKET }}/_astro" --delete --cache-control "public, max-age=31536000, immutable"
+
+      - name: Refresh CloudFront
+        run: aws cloudfront create-invalidation --distribution-id "${{ vars.DISTRIBUTION_ID }}" --paths "/*"

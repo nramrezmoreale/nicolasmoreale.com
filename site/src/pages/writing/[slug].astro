@@ -1,0 +1,49 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import CallToAction from '../../components/CallToAction.astro';
+import { site } from '../../site.config';
+
+export async function getStaticPaths() {
+  const items = await getCollection('writing', ({ data }) => !data.draft);
+  return items.map((item) => ({ params: { slug: item.id }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+const fmt = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' });
+---
+
+<Base title={item.data.title} description={item.data.description} type="article">
+  <article class="wrap">
+    <header class="page-head">
+      <p class="crumb ui"><a href="/writing/">Writing</a></p>
+      <h1>{item.data.title}</h1>
+      <p class="byline ui">
+        {site.name},{' '}
+        <time datetime={item.data.pubDate.toISOString()}>{fmt.format(item.data.pubDate)}</time>
+      </p>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+  <CallToAction heading="Numbers that don't add up?" />
+</Base>
+
+<style>
+  .crumb {
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+  }
+
+  .page-head h1 {
+    max-width: 24ch;
+    font-size: clamp(2.1rem, 1.3rem + 2.8vw, 3.4rem);
+  }
+
+  .page-head .byline {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+</style>

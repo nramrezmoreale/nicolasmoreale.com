@@ -1,0 +1,73 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import CallToAction from '../../components/CallToAction.astro';
+
+export async function getStaticPaths() {
+  const items = await getCollection('work', ({ data }) => !data.draft);
+  return items.map((item) => ({ params: { slug: item.id }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+---
+
+<Base title={item.data.title} description={item.data.summary} type="article">
+  <article class="wrap">
+    <header class="page-head">
+      <p class="crumb ui"><a href="/work/">Work</a></p>
+      <h1>{item.data.title}</h1>
+      <p>{item.data.summary}</p>
+      <dl class="meta ui">
+        <div>
+          <dt>Client</dt>
+          <dd>{item.data.context}</dd>
+        </div>
+        <div>
+          <dt>Stack</dt>
+          <dd>{item.data.stack.join(', ')}</dd>
+        </div>
+      </dl>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+  <CallToAction heading="Have a problem like this one?" />
+</Base>
+
+<style>
+  .crumb {
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+  }
+
+  .page-head h1 {
+    max-width: 22ch;
+  }
+
+  .meta {
+    display: grid;
+    gap: 0.75rem 3rem;
+    margin: 2rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.95rem;
+  }
+
+  dt {
+    color: var(--muted);
+  }
+
+  dd {
+    margin: 0.15rem 0 0;
+    color: var(--ink);
+  }
+
+  @media (min-width: 52rem) {
+    .meta {
+      grid-template-columns: 1fr 1fr;
+      max-width: 46rem;
+    }
+  }
+</style>

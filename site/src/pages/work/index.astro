@@ -1,0 +1,22 @@
+---
+import Base from '../../layouts/Base.astro';
+import WorkList from '../../components/WorkList.astro';
+import CallToAction from '../../components/CallToAction.astro';
+---
+
+<Base
+  title="Work"
+  description="Case studies from Amazon Connect contact centers: reporting migrations, supervisor reporting and voicemail troubleshooting."
+>
+  <header class="wrap page-head">
+    <h1>Work</h1>
+    <p>
+      Problems I've solved on Amazon Connect. Client names and identifying details are left out; the
+      technical substance is not.
+    </p>
+  </header>
+  <div class="wrap">
+    <WorkList />
+  </div>
+  <CallToAction />
+</Base>

@@ -1,0 +1,76 @@
+---
+import { site } from '../site.config';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer ui">
+  <div class="wrap grid">
+    <div>
+      <p class="name">{site.name}</p>
+      <p>{site.title}, {site.location}</p>
+    </div>
+    <ul class="links">
+      <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+      <li><a href={site.linkedin}>LinkedIn</a></li>
+      {site.github && <li><a href={site.github}>GitHub</a></li>}
+    </ul>
+    <p class="colophon">
+      Built with Astro and hosted on AWS: S3, CloudFront and Route 53, deployed by GitHub Actions.
+      {site.sourceRepo && <a href={site.sourceRepo}>Source code</a>}
+    </p>
+    <p class="copy">&copy; {year} {site.name}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: clamp(4rem, 10vw, 7rem);
+    border-top: 1px solid var(--rule);
+    padding-block: 2.5rem 3rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .grid {
+    display: grid;
+    gap: 1.25rem 2rem;
+  }
+
+  .name {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+
+  .colophon {
+    max-width: 34rem;
+  }
+
+  .colophon a {
+    margin-left: 0.35rem;
+  }
+
+  @media (min-width: 52rem) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .links {
+      justify-content: flex-end;
+    }
+
+    .copy {
+      text-align: right;
+      align-self: end;
+    }
+  }
+</style>
