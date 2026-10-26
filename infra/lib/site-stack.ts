@@ -16,6 +16,8 @@ export interface SiteStackProps extends cdk.StackProps {
   hostedZoneId: string;
   /** GitHub repository allowed to deploy, as owner/repo. */
   githubRepo: string;
+  /** GitHub's numeric IDs as ownerId/repoId, for repos that send an ID-based OIDC subject. */
+  githubRepoIds?: string;
   /** Only one GitHub OIDC provider can exist per account. Set false if you already have one. */
   createGithubOidcProvider: boolean;
   /** Where budget alerts go. */
@@ -191,13 +193,22 @@ function handler(event) {
         }).oidcProviderArn
       : `arn:${this.partition}:iam::${this.account}:oidc-provider/token.actions.githubusercontent.com`;
 
+    // GitHub identifies the workflow by repo name, or (newer repos) by name plus the
+    // owner's and repo's numeric IDs, which can't be reused if the repo is renamed or deleted.
+    const subjects = [`repo:${props.githubRepo}:ref:refs/heads/main`];
+    if (props.githubRepoIds) {
+      const [owner, repo] = props.githubRepo.split('/');
+      const [ownerId, repoId] = props.githubRepoIds.split('/');
+      subjects.push(`repo:${owner}@${ownerId}/${repo}@${repoId}:ref:refs/heads/main`);
+    }
+
     const deployRole = new iam.Role(this, 'GithubDeployRole', {
       description: `Deploys ${domainName} from ${props.githubRepo} (main branch only)`,
       maxSessionDuration: cdk.Duration.hours(1),
       assumedBy: new iam.WebIdentityPrincipal(providerArn, {
-        StringEquals: { 'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com' },
-        StringLike: {
-          'token.actions.githubusercontent.com:sub': `repo:${props.githubRepo}:ref:refs/heads/main`,
+        StringEquals: {
+          'token.actions.githubusercontent.com:aud': 'sts.amazonaws.com',
+          'token.actions.githubusercontent.com:sub': subjects,
         },
       }),
     });
