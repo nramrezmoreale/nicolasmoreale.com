@@ -34,13 +34,20 @@ if (githubRepoIds && !/^\d+\/\d+$/.test(githubRepoIds)) {
   throw new Error('githubRepoIds must look like ownerId/repoId, for example 37057810/1433870736');
 }
 
+// Mail for hello@<domain> goes to the alert address unless -c forwardEmailTo=... says otherwise.
+const forwardEmailTo = ctx('forwardEmailTo') || config.alertEmail;
+if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(forwardEmailTo)) {
+  throw new Error('forwardEmailTo (or alertEmail) must be an email address');
+}
+
 new SiteStack(app, 'PersonalSite', {
   // us-east-2 is this account's home region. The certificate is created in us-east-1
   // from inside the stack (see SiteStack).
   env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'us-east-2' },
-  description: `${config.domainName}: S3 + CloudFront + Route 53, deployed from GitHub Actions`,
+  description: `${config.domainName}: S3 + CloudFront + Route 53 + SES mail, deployed from GitHub Actions`,
   ...config,
   githubRepoIds: githubRepoIds || undefined,
+  forwardEmailTo,
 });
 
 cdk.Tags.of(app).add('project', 'personal-site');

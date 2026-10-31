@@ -7,7 +7,10 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import * as route53 from 'aws-cdk-lib/aws-route53';
 import * as targets from 'aws-cdk-lib/aws-route53-targets';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
 import type { Construct } from 'constructs';
+import { MailForwarding } from './mail-forwarding.ts';
 
 export interface SiteStackProps extends cdk.StackProps {
   /** Apex domain, e.g. nicolasmoreale.com. www.<domain> redirects to it. */
@@ -20,8 +23,10 @@ export interface SiteStackProps extends cdk.StackProps {
   githubRepoIds?: string;
   /** Only one GitHub OIDC provider can exist per account. Set false if you already have one. */
   createGithubOidcProvider: boolean;
-  /** Where budget alerts go. */
+  /** Where budget and mail-forwarding alerts go. */
   alertEmail: string;
+  /** Personal inbox that mail for hello@<domain> is forwarded to. */
+  forwardEmailTo: string;
   /** Monthly cost alert threshold for the whole account, in USD. */
   monthlyBudgetUsd: number;
 }
@@ -29,7 +34,7 @@ export interface SiteStackProps extends cdk.StackProps {
 /**
  * Static website: private S3 bucket behind CloudFront (origin access control),
  * TLS certificate and DNS in Route 53, a deploy role for GitHub Actions (OIDC,
- * no long-lived keys) and a monthly cost alert.
+ * no long-lived keys), email forwarding through SES and a monthly cost alert.
  */
 export class SiteStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: SiteStackProps) {
@@ -214,6 +219,18 @@ function handler(event) {
     });
     bucket.grantReadWrite(deployRole);
     distribution.grantCreateInvalidation(deployRole);
+
+    // Email: hello@<domain> forwarded to a personal inbox -------------------------
+
+    const alerts = new sns.Topic(this, 'Alerts', { displayName: `${domainName} alerts` });
+    alerts.addSubscription(new subscriptions.EmailSubscription(props.alertEmail));
+
+    new MailForwarding(this, 'Mail', {
+      zone,
+      mailbox: 'hello',
+      forwardTo: props.forwardEmailTo,
+      alerts,
+    });
 
     // Cost alert ----------------------------------------------------------------
 

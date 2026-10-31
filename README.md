@@ -15,7 +15,7 @@ flowchart LR
 
 ```
 site/    Astro website (pages, case studies, articles)
-infra/   AWS CDK stack (S3, CloudFront, ACM, Route 53, deploy role, budget alert)
+infra/   AWS CDK stack (S3, CloudFront, ACM, Route 53, SES mail forwarding, deploy role, budget alert)
 .github/ Deploy on push to main; build and synth checks on pull requests
 ```
 
@@ -91,14 +91,26 @@ Then in the repository open **Settings > Secrets and variables > Actions > Varia
 
 Run the **Deploy site** workflow from the Actions tab (or push any change under `site/`). The site is live at https://nicolasmoreale.com a minute later.
 
-### 5. Email and booking link
+### 5. Email
 
-- **Email:** the site shows `hello@nicolasmoreale.com`. Set it up with a mail or forwarding provider (for example Zoho Mail, Google Workspace or a forwarding service) and add the MX and TXT records they give you to the Route 53 hosted zone.
-- **Booking:** create a free 30-minute event on Cal.com (or Calendly) and paste its link into `bookingUrl` in `site/src/site.config.ts`.
+The stack handles `hello@nicolasmoreale.com` itself, with no mail provider. SES receives the mail, keeps a copy in S3 for 90 days and forwards it to the address passed as `alertEmail` (or `-c forwardEmailTo=...` for a different inbox). Replying in Gmail goes straight to the sender. The domain's MX, SPF, DKIM and DMARC records are created for you.
+
+After the deploy that adds it, two emails arrive:
+
+1. **Amazon Web Services – Email Address Verification Request**: click the link. While the account is in the SES sandbox, SES only delivers to verified addresses.
+2. **AWS Notification – Subscription Confirmation**: confirm it, so you hear about it if forwarding ever fails.
+
+Then send a test message to hello@nicolasmoreale.com from another account. Spam and viruses are kept in the bucket but not forwarded.
+
+**Replying as hello@:** in the SES console (us-east-2), request production access, then create SMTP credentials and add hello@nicolasmoreale.com in Gmail under **Settings > Accounts > Send mail as**, with server `email-smtp.us-east-2.amazonaws.com`, port 587.
+
+### 6. Booking link
+
+Create a free 30-minute event on Cal.com (or Calendly) and paste its link into `bookingUrl` in `site/src/site.config.ts`.
 
 ## Costs
 
-Expect roughly a dollar a month at personal-site traffic: $0.50 for the Route 53 hosted zone, plus pennies for S3 and CloudFront. The domain renews yearly at the price shown when you register it. The budget alert emails you at 80% of `monthlyBudgetUsd` and when AWS forecasts you will exceed it.
+Expect roughly a dollar a month at personal-site traffic: $0.50 for the Route 53 hosted zone, plus pennies for S3, CloudFront and SES (about $0.10 per thousand emails received or sent). The domain renews yearly at the price shown when you register it. The budget alert emails you at 80% of `monthlyBudgetUsd` and when AWS forecasts you will exceed it.
 
 ## Updating the infrastructure
 

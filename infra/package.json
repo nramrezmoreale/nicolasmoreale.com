@@ -6,7 +6,8 @@
     "synth": "cdk synth",
     "diff": "cdk diff",
     "deploy": "cdk deploy",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "node --test test/*.test.mjs"
   },
   "dependencies": {
     "aws-cdk-lib": "^2.273.0",
