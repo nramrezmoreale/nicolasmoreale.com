@@ -5,35 +5,85 @@ import '@fontsource-variable/newsreader/opsz-italic.css';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { site } from '../site.config';
+import { practices, site, support } from '../site.config';
 
 interface Props {
   title?: string;
   description?: string;
   type?: 'website' | 'article';
+  /** For articles: when it was published. */
+  published?: Date;
+  /** Extra structured data for this page, added to the site-wide graph. */
+  schema?: Record<string, unknown>[];
 }
 
-const { title, description = site.description, type = 'website' } = Astro.props;
+const { title, description = site.description, type = 'website', published, schema = [] } = Astro.props;
 const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | ${site.title}`;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
 const ogImage = new URL('/og.png', Astro.site ?? site.url).href;
 
+// One graph for the whole site: the person, the business and the website, linked by @id so
+// search engines and AI assistants can tell they're the same entity. Pages add their own nodes.
+const person = `${site.url}/#person`;
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  name: site.name,
-  url: site.url,
-  description: site.description,
-  areaServed: ['US', 'EU', 'LATAM'],
-  knowsLanguage: ['en', 'es', 'fr', 'it', 'de'],
-  founder: {
-    '@type': 'Person',
-    name: site.name,
-    jobTitle: site.title,
-    knowsAbout: ['Data engineering', 'AWS Glue', 'Amazon Connect', 'AWS cloud infrastructure'],
-    address: { '@type': 'PostalAddress', addressLocality: 'Buenos Aires', addressCountry: 'AR' },
-    sameAs: [site.linkedin, site.github, site.builderCenter].filter(Boolean),
-  },
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': person,
+      name: site.name,
+      alternateName: site.alternateNames,
+      jobTitle: site.title,
+      description: `${site.name} is an independent AWS engineer in ${site.location} who builds data pipelines and data lakes, Amazon Connect contact centers, and the AWS infrastructure they run on.`,
+      url: site.url,
+      email: `mailto:${site.email}`,
+      worksFor: { '@id': `${site.url}/#business` },
+      knowsAbout: site.knowsAbout,
+      knowsLanguage: ['en', 'es', 'fr', 'it', 'de'],
+      alumniOf: site.education.map((name) => ({ '@type': 'CollegeOrUniversity', name })),
+      address: { '@type': 'PostalAddress', addressLocality: 'Buenos Aires', addressCountry: 'AR' },
+      sameAs: [site.linkedin, site.github, site.builderCenter].filter(Boolean),
+    },
+    {
+      '@type': 'ProfessionalService',
+      '@id': `${site.url}/#business`,
+      name: site.name,
+      url: site.url,
+      description: site.description,
+      image: ogImage,
+      email: site.email,
+      founder: { '@id': person },
+      areaServed: ['US', 'EU', 'LATAM'],
+      knowsLanguage: ['en', 'es', 'fr', 'it', 'de'],
+      address: { '@type': 'PostalAddress', addressLocality: 'Buenos Aires', addressCountry: 'AR' },
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'AWS services',
+        itemListElement: [...practices, { name: support.name, services: [support] }].map((p) => ({
+          '@type': 'OfferCatalog',
+          name: p.name,
+          itemListElement: p.services.map((s) => ({
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: s.name,
+              description: s.summary,
+              url: `${site.url}/services/#${s.slug}`,
+            },
+          })),
+        })),
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${site.url}/#website`,
+      url: site.url,
+      name: site.name,
+      inLanguage: 'en',
+      publisher: { '@id': person },
+    },
+    ...schema,
+  ],
 };
 ---
 
@@ -44,6 +94,7 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -57,6 +108,8 @@ const jsonLd = {
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    {published && <meta property="article:published_time" content={published.toISOString()} />}
+    {type === 'article' && <meta property="article:author" content={site.linkedin} />}
     <meta name="twitter:card" content="summary_large_image" />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

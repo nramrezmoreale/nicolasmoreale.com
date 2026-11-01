@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import CallToAction from '../../components/CallToAction.astro';
+import { site } from '../../site.config';
 
 export async function getStaticPaths() {
   const items = await getCollection('work', ({ data }) => !data.draft);
@@ -10,9 +11,26 @@ export async function getStaticPaths() {
 
 const { item } = Astro.props;
 const { Content } = await render(item);
+const url = new URL(Astro.url.pathname, site.url).href;
+const schema = [
+  {
+    '@type': 'Article',
+    '@id': `${url}#article`,
+    headline: item.data.title,
+    description: item.data.summary,
+    articleSection: `Case study: ${item.data.area}`,
+    keywords: item.data.stack.join(', '),
+    url,
+    mainEntityOfPage: url,
+    image: `${site.url}/og.png`,
+    inLanguage: 'en',
+    author: { '@id': `${site.url}/#person` },
+    publisher: { '@id': `${site.url}/#person` },
+  },
+];
 ---
 
-<Base title={item.data.title} description={item.data.summary} type="article">
+<Base title={item.data.title} description={item.data.summary} type="article" schema={schema}>
   <article class="wrap">
     <header class="page-head">
       <p class="crumb ui"><a href="/work/">Work</a></p>

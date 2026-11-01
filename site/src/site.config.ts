@@ -18,6 +18,29 @@ export const site = {
 
   // Your AWS Builder Center profile, where some of the articles are published. Leave empty to hide.
   builderCenter: 'https://builder.aws.com/community/@yoyiwatts',
+
+  // For search engines and AI assistants (structured data and /llms.txt). Other names you're
+  // listed under elsewhere, so they can tell it's the same person.
+  alternateNames: ['Nicolás Paul Ramírez Moreale', 'Nicolas Moreale'],
+  knowsAbout: [
+    'Data engineering',
+    'ETL pipelines',
+    'Data lakes',
+    'AWS Glue',
+    'PySpark',
+    'Amazon Athena',
+    'Amazon S3',
+    'Amazon QuickSight',
+    'Amazon Connect',
+    'Contact center analytics',
+    'Salesforce Service Cloud Voice',
+    'Amazon Lex',
+    'AWS Lambda',
+    'Amazon DynamoDB',
+    'AWS CDK',
+    'AWS CloudFormation',
+  ],
+  education: ['University of the City of Buenos Aires', 'Universidad Tecnológica Nacional'],
 };
 
 export const nav = [

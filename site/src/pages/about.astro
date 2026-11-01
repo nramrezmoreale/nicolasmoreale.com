@@ -7,6 +7,14 @@ import { site } from '../site.config';
 <Base
   title="About"
   description="Nicolás Moreale is an AWS engineer in Buenos Aires working on data engineering, Amazon Connect contact centers and cloud infrastructure."
+  schema={[
+    {
+      '@type': 'ProfilePage',
+      '@id': `${site.url}/about/#page`,
+      url: `${site.url}/about/`,
+      mainEntity: { '@id': `${site.url}/#person` },
+    },
+  ]}
 >
   <header class="wrap page-head">
     <h1>About</h1>

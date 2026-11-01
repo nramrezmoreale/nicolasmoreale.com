@@ -12,9 +12,31 @@ export async function getStaticPaths() {
 const { item } = Astro.props;
 const { Content } = await render(item);
 const fmt = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' });
+const url = new URL(Astro.url.pathname, site.url).href;
+const schema = [
+  {
+    '@type': 'BlogPosting',
+    '@id': `${url}#article`,
+    headline: item.data.title,
+    description: item.data.description,
+    datePublished: item.data.pubDate.toISOString(),
+    url,
+    mainEntityOfPage: url,
+    image: `${site.url}/og.png`,
+    inLanguage: 'en',
+    author: { '@id': `${site.url}/#person` },
+    publisher: { '@id': `${site.url}/#person` },
+  },
+];
 ---
 
-<Base title={item.data.title} description={item.data.description} type="article">
+<Base
+  title={item.data.title}
+  description={item.data.description}
+  type="article"
+  published={item.data.pubDate}
+  schema={schema}
+>
   <article class="wrap">
     <header class="page-head">
       <p class="crumb ui"><a href="/writing/">Writing</a></p>

@@ -43,6 +43,9 @@ jobs:
       - name: Upload pages and everything else (cached for 5 minutes)
         run: aws s3 sync dist "s3://${{ vars.SITE_BUCKET }}" --delete --exclude "_astro/*" --cache-control "public, max-age=300"
 
+      - name: Serve llms.txt as UTF-8 (it has accented names)
+        run: aws s3 cp dist/llms.txt "s3://${{ vars.SITE_BUCKET }}/llms.txt" --content-type "text/plain; charset=utf-8" --cache-control "public, max-age=300"
+
       - name: Remove assets no page uses any more
         run: aws s3 sync dist/_astro "s3://${{ vars.SITE_BUCKET }}/_astro" --delete --cache-control "public, max-age=31536000, immutable"
 
