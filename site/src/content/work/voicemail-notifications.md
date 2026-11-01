@@ -2,7 +2,8 @@
 title: Why voicemail emails stopped for three programs
 summary: On one instance, voicemail notifications worked for three programs and never arrived for three others. Comparing the flows side by side narrowed it to a few missing attributes and the delivery mapping.
 context: Pharmaceutical patient-support contact center, test environment
-order: 3
+area: Contact centers
+order: 5
 stack:
   - Amazon Connect contact flows
   - Flow JSON exports

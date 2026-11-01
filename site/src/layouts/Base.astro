@@ -30,6 +30,7 @@ const jsonLd = {
     '@type': 'Person',
     name: site.name,
     jobTitle: site.title,
+    knowsAbout: ['Amazon Connect', 'Data engineering', 'AWS cloud infrastructure', 'AWS CDK'],
     address: { '@type': 'PostalAddress', addressLocality: 'Buenos Aires', addressCountry: 'AR' },
     sameAs: [site.linkedin, site.github].filter(Boolean),
   },

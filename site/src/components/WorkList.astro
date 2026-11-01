@@ -1,9 +1,19 @@
 ---
 import { getCollection } from 'astro:content';
 
-const items = (await getCollection('work', ({ data }) => !data.draft)).sort(
+interface Props {
+  /** Show only the first case study in each area (used on the homepage). */
+  onePerArea?: boolean;
+}
+
+const { onePerArea = false } = Astro.props;
+
+const sorted = (await getCollection('work', ({ data }) => !data.draft)).sort(
   (a, b) => a.data.order - b.data.order,
 );
+const items = onePerArea
+  ? sorted.filter((item, i) => sorted.findIndex((x) => x.data.area === item.data.area) === i)
+  : sorted;
 ---
 
 <ul class="work-list">
@@ -14,7 +24,9 @@ const items = (await getCollection('work', ({ data }) => !data.draft)).sort(
           <a href={`/work/${item.id}/`}>{item.data.title}</a>
         </h3>
         <p class="summary">{item.data.summary}</p>
-        <p class="context ui">{item.data.context}</p>
+        <p class="context ui">
+          <span class="area">{item.data.area}</span> · {item.data.context}
+        </p>
       </li>
     ))
   }
@@ -57,6 +69,11 @@ const items = (await getCollection('work', ({ data }) => !data.draft)).sort(
   .context {
     color: var(--muted);
     font-size: 0.95rem;
+  }
+
+  .area {
+    color: var(--ink);
+    font-weight: 600;
   }
 
   @media (min-width: 52rem) {

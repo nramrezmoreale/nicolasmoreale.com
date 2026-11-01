@@ -9,6 +9,7 @@ const work = defineCollection({
     title: z.string(),
     summary: z.string(),
     context: z.string(),
+    area: z.enum(['Contact centers', 'Data engineering', 'Cloud infrastructure']),
     order: z.number(),
     stack: z.array(z.string()),
     draft: z.boolean().default(false),

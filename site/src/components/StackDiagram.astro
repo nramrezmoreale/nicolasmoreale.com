@@ -1,0 +1,287 @@
+---
+// The hero: one pipeline that spans all three areas of work. Contact records
+// stream out of Amazon Connect, land in an S3 data lake and become the
+// reports a team uses, all inside an AWS account defined as code. On load a
+// pulse travels the path once and each block lights up as it arrives. Two
+// layouts: wide for desktop, tall for phones. Times (--at) are when the
+// pulse reaches a block.
+
+const label =
+  'Architecture diagram inside an AWS account defined in AWS CDK and deployed by GitHub Actions. Amazon Connect handles calls, chats and tasks. Amazon Data Firehose streams contact records into an S3 data lake, partitioned by day. Glue and Athena make the data queryable in SQL, and dashboards and reports show the metrics your contract defines. CloudWatch alarms email failures and costs.';
+---
+
+<figure class="stack">
+  <!-- Wide layout -->
+  <svg class="stack-svg stack-svg--wide" viewBox="0 0 600 376" role="img" aria-label={label}>
+    <defs>
+      <marker id="stack-arrow-w" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+        <path d="M0 0 L8 4 L0 8 z" />
+      </marker>
+    </defs>
+
+    <rect class="frame" x="6" y="6" width="588" height="364" rx="12" />
+    <g class="frame-labels">
+      <text x="26" y="31">Your AWS account</text>
+      <text x="574" y="355" text-anchor="end">Defined in AWS CDK, deployed by GitHub Actions</text>
+    </g>
+
+    <g class="wires">
+      <line x1="272" y1="80" x2="327" y2="80" marker-end="url(#stack-arrow-w)" />
+      <line x1="448" y1="112" x2="448" y2="153" marker-end="url(#stack-arrow-w)" />
+      <line x1="328" y1="186" x2="273" y2="186" marker-end="url(#stack-arrow-w)" />
+      <line x1="152" y1="218" x2="152" y2="259" marker-end="url(#stack-arrow-w)" />
+      <line class="dashed" x1="448" y1="218" x2="448" y2="259" marker-end="url(#stack-arrow-w)" />
+    </g>
+
+    <path class="route" pathLength="1" d="M152 80 L448 80 L448 186 L152 186 L152 292" />
+    <circle class="pulse" r="5.5">
+      <animateMotion dur="2.8s" begin="0.5s" fill="freeze" path="M152 80 L448 80 L448 186 L152 186 L152 292" />
+    </circle>
+
+    <g class="blk lit" style="--at: 0.3s">
+      <rect x="32" y="48" width="240" height="64" rx="6" />
+      <text class="t" x="48" y="74">Amazon Connect</text>
+      <text class="s" x="48" y="95">Calls, chats and tasks</text>
+    </g>
+    <g class="blk lit" style="--at: 1.11s">
+      <rect x="328" y="48" width="240" height="64" rx="6" />
+      <text class="t" x="344" y="74">Amazon Data Firehose</text>
+      <text class="s" x="344" y="95">Contact records, as they happen</text>
+    </g>
+    <g class="blk lit" style="--at: 1.79s">
+      <rect x="328" y="154" width="240" height="64" rx="6" />
+      <text class="t" x="344" y="180">S3 data lake</text>
+      <text class="s" x="344" y="201">Partitioned by day</text>
+    </g>
+    <g class="blk lit" style="--at: 2.51s">
+      <rect x="32" y="154" width="240" height="64" rx="6" />
+      <text class="t" x="48" y="180">Glue and Athena</text>
+      <text class="s" x="48" y="201">Cataloged, queryable in SQL</text>
+    </g>
+    <g class="blk end lit" style="--at: 3.19s">
+      <rect x="32" y="260" width="240" height="64" rx="6" />
+      <text class="t" x="48" y="286">Dashboards and reports</text>
+      <text class="s" x="48" y="307">Metrics your contract defines</text>
+    </g>
+    <g class="blk">
+      <rect x="328" y="260" width="240" height="64" rx="6" />
+      <text class="t" x="344" y="286">CloudWatch alarms</text>
+      <text class="s" x="344" y="307">Failures and costs, by email</text>
+    </g>
+  </svg>
+
+  <!-- Tall layout -->
+  <svg class="stack-svg stack-svg--tall" viewBox="0 0 320 548" role="img" aria-label={label}>
+    <defs>
+      <marker id="stack-arrow-t" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+        <path d="M0 0 L8 4 L0 8 z" />
+      </marker>
+    </defs>
+
+    <rect class="frame" x="4" y="4" width="312" height="540" rx="12" />
+    <g class="frame-labels">
+      <text x="20" y="29">Your AWS account</text>
+      <text x="20" y="527">Defined in AWS CDK, deployed by GitHub Actions</text>
+    </g>
+
+    <g class="wires">
+      <line x1="160" y1="108" x2="160" y2="139" marker-end="url(#stack-arrow-t)" />
+      <line x1="160" y1="204" x2="160" y2="235" marker-end="url(#stack-arrow-t)" />
+      <line x1="160" y1="300" x2="160" y2="331" marker-end="url(#stack-arrow-t)" />
+      <line x1="160" y1="396" x2="160" y2="427" marker-end="url(#stack-arrow-t)" />
+    </g>
+
+    <path class="route" pathLength="1" d="M160 76 L160 460" />
+    <circle class="pulse" r="5.5">
+      <animateMotion dur="2.8s" begin="0.5s" fill="freeze" path="M160 76 L160 460" />
+    </circle>
+
+    <g class="blk lit" style="--at: 0.3s">
+      <rect x="20" y="44" width="280" height="64" rx="6" />
+      <text class="t" x="36" y="70">Amazon Connect</text>
+      <text class="s" x="36" y="91">Calls, chats and tasks</text>
+    </g>
+    <g class="blk lit" style="--at: 0.97s">
+      <rect x="20" y="140" width="280" height="64" rx="6" />
+      <text class="t" x="36" y="166">Amazon Data Firehose</text>
+      <text class="s" x="36" y="187">Contact records, as they happen</text>
+    </g>
+    <g class="blk lit" style="--at: 1.67s">
+      <rect x="20" y="236" width="280" height="64" rx="6" />
+      <text class="t" x="36" y="262">S3 data lake</text>
+      <text class="s" x="36" y="283">Partitioned by day</text>
+    </g>
+    <g class="blk lit" style="--at: 2.37s">
+      <rect x="20" y="332" width="280" height="64" rx="6" />
+      <text class="t" x="36" y="358">Glue and Athena</text>
+      <text class="s" x="36" y="379">Cataloged, queryable in SQL</text>
+    </g>
+    <g class="blk end lit" style="--at: 3.07s">
+      <rect x="20" y="428" width="280" height="64" rx="6" />
+      <text class="t" x="36" y="454">Dashboards and reports</text>
+      <text class="s" x="36" y="475">Metrics your contract defines</text>
+    </g>
+  </svg>
+
+  <figcaption class="ui">
+    One pipeline, end to end: contact records stream out of Amazon Connect into a data lake and become
+    the numbers your team reports, all defined as code in your own AWS account.
+  </figcaption>
+</figure>
+
+<script>
+  // Respect reduced motion: jump the SVG timeline to its end state.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll<SVGSVGElement>('.stack-svg').forEach((svg) => {
+      svg.pauseAnimations();
+      svg.setCurrentTime(10);
+    });
+  }
+</script>
+
+<style>
+  .stack {
+    margin: 0;
+  }
+
+  .stack-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    font-family: var(--font-display);
+    overflow: visible;
+  }
+
+  .stack-svg--wide {
+    display: none;
+  }
+
+  @media (min-width: 40rem) {
+    .stack-svg--wide {
+      display: block;
+    }
+    .stack-svg--tall {
+      display: none;
+    }
+  }
+
+  .stack-svg--tall {
+    max-width: 22rem;
+    margin-inline: auto;
+  }
+
+  .frame {
+    fill: none;
+    stroke: var(--rule);
+    stroke-width: 1.5;
+    stroke-dasharray: 6 5;
+  }
+
+  .frame-labels text {
+    fill: var(--muted);
+    font-size: 11.5px;
+    font-weight: 500;
+  }
+
+  .wires line {
+    stroke: var(--muted);
+    stroke-width: 1.25;
+  }
+
+  .wires .dashed {
+    stroke-dasharray: 4 4;
+  }
+
+  marker path {
+    fill: var(--muted);
+  }
+
+  .route {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2.5;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 2.8s linear 0.5s forwards;
+  }
+
+  .pulse {
+    fill: var(--accent);
+  }
+
+  .blk rect {
+    fill: var(--paper-raised);
+    stroke: var(--rule);
+    stroke-width: 1.5;
+  }
+
+  .blk .t {
+    fill: var(--ink);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .blk .s {
+    fill: var(--muted);
+    font-size: 12px;
+  }
+
+  .blk.lit rect {
+    animation: light 300ms ease-out var(--at) forwards;
+  }
+
+  .blk.end rect {
+    animation-name: arrive;
+  }
+
+  .blk.end .t,
+  .blk.end .s {
+    animation: arrive-text 300ms ease-out var(--at) forwards;
+  }
+
+  figcaption {
+    margin-top: 1rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 32rem;
+  }
+
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes light {
+    to {
+      stroke: var(--accent);
+      fill: var(--accent-soft);
+    }
+  }
+
+  @keyframes arrive {
+    to {
+      stroke: var(--accent);
+      fill: var(--accent);
+    }
+  }
+
+  @keyframes arrive-text {
+    to {
+      fill: var(--accent-ink);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .route,
+    .blk.lit rect,
+    .blk.end .t,
+    .blk.end .s {
+      animation-duration: 1ms;
+      animation-delay: 0s;
+    }
+    .pulse {
+      display: none;
+    }
+  }
+</style>

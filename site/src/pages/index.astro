@@ -1,10 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import FlowDiagram from '../components/FlowDiagram.astro';
+import StackDiagram from '../components/StackDiagram.astro';
 import WorkList from '../components/WorkList.astro';
 import CallToAction from '../components/CallToAction.astro';
-import { services, site } from '../site.config';
+import { practices, site, support } from '../site.config';
 
 const articles = (await getCollection('writing', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -15,10 +15,11 @@ const latest = articles[0];
 <Base>
   <section class="hero wrap" aria-labelledby="hero-heading">
     <div class="hero-text">
-      <h1 id="hero-heading">I build, fix and modernize Amazon Connect contact centers.</h1>
+      <h1 id="hero-heading">I build contact centers, data pipelines and cloud infrastructure on AWS.</h1>
       <p class="lede">
-        Independent AWS engineer in {site.location.split(',')[0]}. I work on contact flows, routing,
-        Salesforce Service Cloud Voice and the reporting behind them, for teams in the US and Europe.
+        Independent AWS engineer in {site.location.split(',')[0]}, working with teams in the US and
+        Europe. Amazon Connect is the biggest part of my work. I also build data pipelines and data
+        lakes, and set up the AWS accounts, security and automation everything runs on.
       </p>
       <div class="actions">
         <a class="button" href={site.bookingUrl}>Book a 30-minute call</a>
@@ -27,26 +28,40 @@ const latest = articles[0];
       <p class="note ui">Available during US business hours. I work in English and Spanish.</p>
     </div>
     <div class="hero-figure">
-      <FlowDiagram />
+      <StackDiagram />
     </div>
   </section>
 
   <section class="wrap block" aria-labelledby="services-heading">
     <div class="block-head">
-      <h2 id="services-heading">Work I take on</h2>
-      <a class="ui" href="/services/">What each one includes</a>
+      <h2 id="services-heading">What I work on</h2>
+      <a class="ui" href="/services/">What each service includes</a>
     </div>
-    <ul class="services">
+    <ul class="practices">
       {
-        services.map((s) => (
+        practices.map((p) => (
           <li>
-            <h3>{s.name}</h3>
-            <p>{s.summary}</p>
-            <p class="format ui">{s.format}</p>
+            <h3>
+              <a href={`/services/#${p.slug}`}>{p.name}</a>
+            </h3>
+            <p class="tools ui">{p.tools}</p>
+            <p>{p.summary}</p>
+            <ul class="offers ui">
+              {p.services.map((s) => (
+                <li>
+                  <a href={`/services/#${s.slug}`}>{s.name}</a>
+                </li>
+              ))}
+            </ul>
           </li>
         ))
       }
     </ul>
+    <p class="engage">
+      Work comes as a fixed-price review, a scoped project or a monthly{' '}
+      <a href={`/services/#${support.slug}`}>support retainer</a>, and every engagement starts with a
+      30-minute call and a written scope.
+    </p>
   </section>
 
   <section class="wrap block" aria-labelledby="work-heading">
@@ -54,7 +69,7 @@ const latest = articles[0];
       <h2 id="work-heading">Recent work</h2>
       <a class="ui" href="/work/">All case studies</a>
     </div>
-    <WorkList />
+    <WorkList onePerArea />
   </section>
 
   {
@@ -78,14 +93,15 @@ const latest = articles[0];
     <h2 id="about-heading">Why work with me</h2>
     <div class="about-grid">
       <p>
-        I spend my days inside Amazon Connect instances for regulated, pharmaceutical contact centers,
-        where a misrouted call or a wrong number on a report has consequences. I care about the
-        unglamorous parts: holiday tables, voicemail delivery, metric definitions, and documentation
-        someone can follow after I leave.
+        I spend my days inside Amazon Connect for regulated, pharmaceutical contact centers, where a
+        misrouted call or a wrong number on a report has consequences. I care about the unglamorous
+        parts: holiday tables, voicemail delivery, metric definitions, and documentation someone can
+        follow after I leave.
       </p>
       <p>
-        I also have a degree in data science, which is the direction I'm taking this work. Contact
-        centers produce a lot of data, and most teams use very little of it.
+        Before that I was a data engineer, and I have a degree in data science. So I don't stop at the
+        contact flow: I build the pipelines and reports behind it, and the AWS infrastructure under both,
+        as code, in your account, with access you control.
       </p>
       <p><a href="/about/">More about me</a></p>
     </div>
@@ -122,9 +138,13 @@ const latest = articles[0];
     font-size: 0.95rem;
   }
 
+  .hero h1 {
+    font-size: clamp(2.5rem, 1.5rem + 3vw, 3.75rem);
+  }
+
   @media (min-width: 64rem) {
     .hero {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
     }
   }
 
@@ -141,36 +161,63 @@ const latest = articles[0];
     margin-bottom: 1.5rem;
   }
 
-  .services {
+  .practices {
     list-style: none;
     margin: 0;
     padding: 0;
-    border-top: 1px solid var(--rule);
-  }
-
-  .services li {
     display: grid;
-    gap: 0.4rem 3rem;
-    padding-block: 1.5rem;
-    border-bottom: 1px solid var(--rule);
+    gap: 2rem 2.5rem;
   }
 
-  .services p {
-    max-width: 38rem;
+  .practices > li {
+    border-top: 3px solid var(--ink);
+    padding-top: 1.1rem;
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
   }
 
-  .format {
+  .practices h3 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .practices h3 a:hover {
+    color: var(--accent);
+  }
+
+  .tools {
     color: var(--muted);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
   }
 
-  @media (min-width: 52rem) {
-    .services li {
-      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr) minmax(0, 0.6fr);
-      align-items: baseline;
-    }
-    .format {
-      text-align: right;
+  .offers {
+    list-style: none;
+    margin: 0.4rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.98rem;
+  }
+
+  .offers a {
+    text-decoration-color: var(--rule);
+  }
+
+  .offers a:hover {
+    text-decoration-color: var(--accent);
+  }
+
+  .engage {
+    margin-top: 2.25rem;
+    max-width: 44rem;
+    color: var(--muted);
+  }
+
+  @media (min-width: 60rem) {
+    .practices {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 

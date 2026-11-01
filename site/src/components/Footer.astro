@@ -8,7 +8,7 @@ const year = new Date().getFullYear();
   <div class="wrap grid">
     <div>
       <p class="name">{site.name}</p>
-      <p>{site.title}, {site.location}</p>
+      <p>{site.title} · {site.location}</p>
     </div>
     <ul class="links">
       <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
@@ -16,7 +16,10 @@ const year = new Date().getFullYear();
       {site.github && <li><a href={site.github}>GitHub</a></li>}
     </ul>
     <p class="colophon">
-      Built with Astro and hosted on AWS: S3, CloudFront and Route 53, deployed by GitHub Actions.
+      Built with Astro and hosted on my own AWS account: S3, CloudFront, Route 53 and SES, deployed by
+      GitHub Actions.
+      <a href="/work/this-website-on-aws/">How it's built</a>
+      {site.sourceRepo && <span aria-hidden="true">·</span>}
       {site.sourceRepo && <a href={site.sourceRepo}>Source code</a>}
     </p>
     <p class="copy">&copy; {year} {site.name}</p>
@@ -55,7 +58,8 @@ const year = new Date().getFullYear();
     max-width: 34rem;
   }
 
-  .colophon a {
+  .colophon a,
+  .colophon span {
     margin-left: 0.35rem;
   }
 

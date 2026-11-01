@@ -20,6 +20,10 @@ const { Content } = await render(item);
       <p>{item.data.summary}</p>
       <dl class="meta ui">
         <div>
+          <dt>Area</dt>
+          <dd>{item.data.area}</dd>
+        </div>
+        <div>
           <dt>Client</dt>
           <dd>{item.data.context}</dd>
         </div>
@@ -66,8 +70,8 @@ const { Content } = await render(item);
 
   @media (min-width: 52rem) {
     .meta {
-      grid-template-columns: 1fr 1fr;
-      max-width: 46rem;
+      grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr) minmax(0, 1.5fr);
+      max-width: 56rem;
     }
   }
 </style>

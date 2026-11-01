@@ -1,40 +1,71 @@
 ---
 import Base from '../layouts/Base.astro';
 import CallToAction from '../components/CallToAction.astro';
-import { services } from '../site.config';
+import { practices, support } from '../site.config';
 ---
 
 <Base
   title="Services"
-  description="Amazon Connect health checks, builds and fixes, reporting and data, AI in the contact center, and ongoing support."
+  description="AWS work in three areas: Amazon Connect contact centers, data engineering, and cloud infrastructure. Fixed-price reviews, scoped projects and ongoing support."
 >
   <header class="wrap page-head">
     <h1>Services</h1>
     <p>
-      Five ways to work together, from a two-week review to ongoing support. Every engagement starts
-      with a 30-minute call and a written scope with a fixed price.
+      Three areas of AWS work: contact centers, data engineering and cloud infrastructure. Each
+      engagement is a fixed-price review, a scoped project or ongoing support, and starts with a
+      30-minute call and a written scope.
     </p>
+    <nav class="jump ui" aria-label="Areas">
+      {practices.map((p) => <a href={`#${p.slug}`}>{p.name}</a>)}
+      <a href={`#${support.slug}`}>{support.name}</a>
+    </nav>
   </header>
 
   <div class="wrap">
     {
-      services.map((s) => (
-        <section class="service" id={s.slug} aria-labelledby={`${s.slug}-heading`}>
-          <div class="service-head">
-            <h2 id={`${s.slug}-heading`}>{s.name}</h2>
-            <p class="format ui">{s.format}</p>
+      practices.map((p) => (
+        <section class="practice" id={p.slug} aria-labelledby={`${p.slug}-heading`}>
+          <div class="practice-head">
+            <h2 id={`${p.slug}-heading`}>{p.name}</h2>
+            <p class="tools ui">{p.tools}</p>
+            <p class="practice-summary">{p.summary}</p>
           </div>
-          <div class="service-body">
-            <p>{s.summary}</p>
-            <ul>
-              {s.includes.map((line) => (
-                <li>{line}</li>
-              ))}
-            </ul>
-          </div>
+          {p.services.map((s) => (
+            <section class="service" id={s.slug} aria-labelledby={`${s.slug}-heading`}>
+              <div class="service-head">
+                <h3 id={`${s.slug}-heading`}>{s.name}</h3>
+                <p class="format ui">{s.format}</p>
+              </div>
+              <div class="service-body">
+                <p>{s.summary}</p>
+                <ul>
+                  {s.includes.map((line) => (
+                    <li>{line}</li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+          ))}
         </section>
       ))
     }
+
+    <section class="practice" id={support.slug} aria-labelledby={`${support.slug}-heading`}>
+      <div class="service service--solo">
+        <div class="service-head">
+          <h2 id={`${support.slug}-heading`}>{support.name}</h2>
+          <p class="format ui">{support.format}</p>
+        </div>
+        <div class="service-body">
+          <p>{support.summary}</p>
+          <ul>
+            {support.includes.map((line) => (
+              <li>{line}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
 
     <section class="extra" aria-labelledby="who-heading">
       <h2 id="who-heading">Who I work with</h2>
@@ -44,12 +75,16 @@ import { services } from '../site.config';
           <p>Running Amazon Connect and short on people who know it well.</p>
         </li>
         <li>
-          <h3>AWS partners</h3>
-          <p>Who need another Connect engineer on a delivery, under your brand or mine.</p>
+          <h3>Data and analytics teams</h3>
+          <p>Who need pipelines and a data lake on AWS without hiring a full data platform team.</p>
         </li>
         <li>
-          <h3>Salesforce teams</h3>
-          <p>Adding Service Cloud Voice and needing the Connect side done properly.</p>
+          <h3>Small companies and startups</h3>
+          <p>Who want their AWS account set up properly: secure, automated and with costs under control.</p>
+        </li>
+        <li>
+          <h3>AWS and Salesforce partners</h3>
+          <p>Who need another engineer on a delivery, under your brand or mine.</p>
         </li>
       </ul>
     </section>
@@ -84,11 +119,54 @@ import { services } from '../site.config';
 </Base>
 
 <style>
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-top: 1.5rem;
+    font-size: 0.98rem;
+  }
+
+  .practice {
+    margin-top: clamp(3rem, 7vw, 4.5rem);
+    scroll-margin-top: 1.5rem;
+  }
+
+  .practice-head {
+    border-top: 3px solid var(--ink);
+    padding-top: 1.25rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .tools {
+    margin-top: 0.5rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .practice-summary {
+    margin-top: 0.75rem;
+    max-width: 44rem;
+    font-size: var(--step-1);
+    line-height: 1.5;
+  }
+
   .service {
     display: grid;
     gap: 1rem 3rem;
-    padding-block: 2.25rem;
-    border-top: 1px solid var(--rule);
+    padding-block: 2rem;
+    border-bottom: 1px solid var(--rule);
+    scroll-margin-top: 1.5rem;
+  }
+
+  .service--solo {
+    border-top: 3px solid var(--ink);
+    border-bottom: 0;
+    padding-top: 1.25rem;
+  }
+
+  .service-head h3 {
+    font-size: var(--step-1);
   }
 
   .format {
@@ -164,7 +242,7 @@ import { services } from '../site.config';
 
   @media (min-width: 52rem) {
     .who {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
     .steps {
       grid-template-columns: repeat(4, 1fr);
