@@ -6,34 +6,36 @@ import { site } from '../site.config';
 
 <Base
   title="About"
-  description="Nicolás Moreale is an AWS engineer in Buenos Aires working on Amazon Connect contact centers, data engineering and cloud infrastructure."
+  description="Nicolás Moreale is an AWS engineer in Buenos Aires working on data engineering, Amazon Connect contact centers and cloud infrastructure."
 >
   <header class="wrap page-head">
     <h1>About</h1>
     <p>
-      I'm Nicolás, an AWS engineer in Buenos Aires. I build Amazon Connect contact centers, data
-      pipelines and data lakes, and the AWS infrastructure they run on.
+      I'm Nicolás, an AWS engineer in Buenos Aires. I build data pipelines and data lakes, Amazon
+      Connect contact centers, and the AWS infrastructure they run on.
     </p>
   </header>
 
   <div class="wrap columns">
     <div class="prose">
       <p>
-        Since late 2025 I've worked on Amazon Connect for pharmaceutical patient-support programs: contact
-        flows and routing, voicemail, Salesforce Service Cloud Voice, Lambda and DynamoDB integrations,
-        and the reporting on top. It's regulated work. A call that lands in the wrong queue or a service
-        level that's calculated the wrong way is a real problem, so I test with real calls and write
-        everything down.
-      </p>
-      <p>
-        Before that I was a data engineer at Cognizant, working on data pipelines, reporting and cloud
-        operations, and I built process automation at IBM. I've also worked with Azure Data Factory,
+        My focus is data engineering on AWS: pipelines that bring data in from databases, files and APIs,
+        Glue and PySpark jobs that clean, validate and deduplicate it, and data lakes that business teams
+        can query and report on with Athena and QuickSight. I was a data engineer at Cognizant, working on
+        data pipelines, reporting and cloud operations, and I've also worked with Azure Data Factory,
         Synapse and Azure DevOps. I have a Bachelor's degree in Data Science from the University of the
         City of Buenos Aires.
       </p>
       <p>
+        Since late 2025 I've also worked on Amazon Connect for pharmaceutical patient-support programs:
+        contact flows and routing, SMS and voicemail, Salesforce Service Cloud Voice, Lambda and DynamoDB
+        integrations, and the reporting on top. It's regulated work. A call that lands in the wrong queue
+        or a service level that's calculated the wrong way is a real problem, so I test with real calls
+        and write everything down. Before all this I built process automation at IBM.
+      </p>
+      <p>
         That mix is the point. Contact centers produce a lot of data and most teams use very little of
-        it, and both the contact center and the data need an AWS account that is secure, automated and
+        it, and both the data and the contact center need an AWS account that is secure, automated and
         affordable. I work across all three. This website is a small example: it runs on my own AWS
         account, defined in AWS CDK, with no stored keys, for about a dollar a month.
         <a href="/work/this-website-on-aws/">How it's built</a>.

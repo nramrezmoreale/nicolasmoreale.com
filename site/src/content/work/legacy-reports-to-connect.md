@@ -3,7 +3,7 @@ title: Reports that match the contract after leaving NICE
 summary: Mapped eight legacy NICE inContact reports to Amazon Connect, and caught a service-level number that counted hang-ups as success.
 context: Pharmaceutical patient-support contact center
 area: Contact centers
-order: 1
+order: 3
 stack:
   - Amazon Connect historical metrics
   - Amazon Connect dashboards

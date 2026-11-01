@@ -3,9 +3,9 @@
 export const site = {
   name: 'Nicolás Moreale',
   url: 'https://nicolasmoreale.com',
-  title: 'AWS engineer for contact centers, data and cloud',
+  title: 'AWS engineer for data, contact centers and cloud',
   description:
-    'Independent AWS engineer in Buenos Aires. I build Amazon Connect contact centers, data pipelines and data lakes, and the AWS infrastructure they run on, for teams in the US and Europe.',
+    'Independent AWS engineer in Buenos Aires. I build data pipelines and data lakes, Amazon Connect contact centers, and the AWS infrastructure they run on, for teams in the US and Europe.',
   location: 'Buenos Aires, Argentina',
 
   email: 'hello@nicolasmoreale.com',
@@ -41,8 +41,45 @@ export type Practice = {
   services: Service[];
 };
 
-// The three areas of work. Amazon Connect comes first because it's most of the work today.
+// The three areas of work, in the order they're shown: data first, then contact centers, then cloud.
 export const practices: Practice[] = [
+  {
+    slug: 'data',
+    name: 'Data engineering',
+    tools: 'S3, Glue and PySpark, Athena, Lambda, EventBridge, QuickSight',
+    summary:
+      'Pipelines that bring data from databases, files and APIs into S3, a data lake you can query with SQL, and dashboards built on data that has been cleaned and checked.',
+    services: [
+      {
+        slug: 'data-pipelines',
+        name: 'Data pipelines',
+        summary:
+          'Batch and event-driven pipelines that bring data from your systems into S3, cleaned, partitioned and checked, with an alert when a load fails.',
+        format: 'Project',
+        includes: [
+          'Ingestion from relational databases, REST APIs, CSV exports and file drops',
+          'Cleansing, validation, deduplication and transformations in AWS Glue with PySpark',
+          'Automation with Lambda, EventBridge and Step Functions',
+          'Curated datasets in Parquet, with CloudWatch monitoring and failure alerts',
+          'Moving existing jobs from Azure Data Factory, scripts or legacy tools',
+        ],
+      },
+      {
+        slug: 'data-lakes-and-reporting',
+        name: 'Data lakes and reporting',
+        summary:
+          'An S3 data lake with Athena on top, and reports whose numbers you can defend, including contact-center data from Amazon Connect.',
+        format: 'Project',
+        includes: [
+          'S3 data lake with the Glue Data Catalog and Athena',
+          'Amazon Connect data lake and contact-center analytics',
+          'Metric definitions written down and tested against the raw data',
+          'Mapping legacy reports to the new source, with side-by-side checks',
+          'Dashboards in Amazon QuickSight, or scheduled reports by email',
+        ],
+      },
+    ],
+  },
   {
     slug: 'contact-centers',
     name: 'Contact centers',
@@ -92,43 +129,6 @@ export const practices: Practice[] = [
           'Bots that answer the common questions before a caller reaches the queue',
           'Post-call summaries and transcripts with Contact Lens',
           'Reporting on what callers actually ask about',
-        ],
-      },
-    ],
-  },
-  {
-    slug: 'data',
-    name: 'Data engineering',
-    tools: 'S3, Glue and PySpark, Athena, Lambda, EventBridge, QuickSight',
-    summary:
-      'Pipelines that bring data from databases, files and APIs into S3, a data lake you can query with SQL, and dashboards built on data that has been cleaned and checked.',
-    services: [
-      {
-        slug: 'data-pipelines',
-        name: 'Data pipelines',
-        summary:
-          'Batch and event-driven pipelines that bring data from your systems into S3, cleaned, partitioned and checked, with an alert when a load fails.',
-        format: 'Project',
-        includes: [
-          'Ingestion from relational databases, REST APIs, CSV exports and file drops',
-          'Cleansing, validation, deduplication and transformations in AWS Glue with PySpark',
-          'Automation with Lambda, EventBridge and Step Functions',
-          'Curated datasets in Parquet, with CloudWatch monitoring and failure alerts',
-          'Moving existing jobs from Azure Data Factory, scripts or legacy tools',
-        ],
-      },
-      {
-        slug: 'data-lakes-and-reporting',
-        name: 'Data lakes and reporting',
-        summary:
-          'An S3 data lake with Athena on top, and reports whose numbers you can defend, including contact-center data from Amazon Connect.',
-        format: 'Project',
-        includes: [
-          'S3 data lake with the Glue Data Catalog and Athena',
-          'Amazon Connect data lake and contact-center analytics',
-          'Metric definitions written down and tested against the raw data',
-          'Mapping legacy reports to the new source, with side-by-side checks',
-          'Dashboards in Amazon QuickSight, or scheduled reports by email',
         ],
       },
     ],

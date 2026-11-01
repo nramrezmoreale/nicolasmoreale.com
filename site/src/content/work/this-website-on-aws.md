@@ -3,7 +3,7 @@ title: This website and its email, on AWS for about a dollar a month
 summary: A static site behind CloudFront, deployed from GitHub with no stored AWS keys, and email on my own domain through SES. All of it defined in AWS CDK, in my own account.
 context: My own consulting business
 area: Cloud infrastructure
-order: 3
+order: 5
 stack:
   - AWS CDK
   - CloudFront and S3

@@ -3,7 +3,7 @@ title: One data lake for operational data spread across many sources
 summary: Operational data lived in databases, CSV exports and APIs, and reporting depended on preparing it by hand. I built a data lake and ETL pipeline on AWS so business teams get consistent reports without the manual work.
 context: Company centralizing its operational data
 area: Data engineering
-order: 2
+order: 1
 stack:
   - Amazon S3
   - AWS Glue with PySpark

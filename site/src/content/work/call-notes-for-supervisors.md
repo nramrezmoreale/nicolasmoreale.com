@@ -3,7 +3,7 @@ title: After-call notes that supervisors can actually read
 summary: Agents' notes lived in contact attributes that supervisors couldn't export. I set up the Amazon Connect data lake and scheduled CSV reports by email.
 context: Pharmaceutical patient-support contact center
 area: Data engineering
-order: 4
+order: 2
 stack:
   - Amazon Connect data lake
   - Amazon Athena
