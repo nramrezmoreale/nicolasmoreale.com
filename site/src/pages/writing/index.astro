@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import { site } from '../../site.config';
 
 const articles = (await getCollection('writing', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -11,11 +12,14 @@ const fmt = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC
 
 <Base
   title="Writing"
-  description="Notes on AWS, from real projects: data engineering, Amazon Connect and cloud infrastructure."
+  description="Notes on AWS: data engineering, Amazon Connect, cloud infrastructure and generative AI."
 >
   <header class="wrap page-head">
     <h1>Writing</h1>
-    <p>Notes on AWS written from real projects: data engineering, Amazon Connect and cloud infrastructure.</p>
+    <p>
+      Notes on AWS: data engineering, Amazon Connect, cloud infrastructure and generative AI. Some
+      are published on AWS Builder Center, and open there.
+    </p>
   </header>
 
   <div class="wrap">
@@ -24,16 +28,32 @@ const fmt = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC
         articles.map((a) => (
           <li>
             <h2>
-              <a href={`/writing/${a.id}/`}>{a.data.title}</a>
+              <a href={a.data.url ?? `/writing/${a.id}/`}>{a.data.title}</a>
             </h2>
             <p>{a.data.description}</p>
             <p class="date ui">
               <time datetime={a.data.pubDate.toISOString()}>{fmt.format(a.data.pubDate)}</time>
+              {a.data.source && (
+                <>
+                  <span aria-hidden="true"> · </span>
+                  <span class="source">
+                    On {a.data.source}
+                    <span aria-hidden="true"> ↗</span>
+                  </span>
+                </>
+              )}
             </p>
           </li>
         ))
       }
     </ul>
+    {
+      site.builderCenter && (
+        <p class="more ui">
+          <a href={site.builderCenter}>All my posts on AWS Builder Center</a>
+        </p>
+      )
+    }
   </div>
 </Base>
 
@@ -71,5 +91,9 @@ const fmt = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC
   .date {
     color: var(--muted);
     font-size: 0.95rem;
+  }
+
+  .more {
+    margin-top: 1.75rem;
   }
 </style>

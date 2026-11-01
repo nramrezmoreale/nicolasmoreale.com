@@ -6,10 +6,10 @@ import WorkList from '../components/WorkList.astro';
 import CallToAction from '../components/CallToAction.astro';
 import { practices, site, support } from '../site.config';
 
-const articles = (await getCollection('writing', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
-const latest = articles[0];
+// The two newest articles not marked featured: false.
+const latest = (await getCollection('writing', ({ data }) => !data.draft && data.featured))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 2);
 ---
 
 <Base>
@@ -74,18 +74,26 @@ const latest = articles[0];
   </section>
 
   {
-    latest && (
+    latest.length > 0 && (
       <section class="wrap block" aria-labelledby="writing-heading">
         <div class="block-head">
           <h2 id="writing-heading">Latest writing</h2>
           <a class="ui" href="/writing/">All articles</a>
         </div>
-        <article class="latest">
-          <h3>
-            <a href={`/writing/${latest.id}/`}>{latest.data.title}</a>
-          </h3>
-          <p>{latest.data.description}</p>
-        </article>
+        {latest.map((a) => (
+          <article class="latest">
+            <h3>
+              <a href={a.data.url ?? `/writing/${a.id}/`}>{a.data.title}</a>
+            </h3>
+            <p>{a.data.description}</p>
+            {a.data.source && (
+              <p class="source ui">
+                On {a.data.source}
+                <span aria-hidden="true"> ↗</span>
+              </p>
+            )}
+          </article>
+        ))}
       </section>
     )
   }
@@ -239,6 +247,15 @@ const latest = articles[0];
 
   .latest p {
     margin-top: 0.6rem;
+  }
+
+  .latest + .latest {
+    margin-top: 1.75rem;
+  }
+
+  .latest .source {
+    color: var(--muted);
+    font-size: 0.95rem;
   }
 
   .about-grid {

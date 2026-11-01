@@ -5,7 +5,7 @@ import CallToAction from '../../components/CallToAction.astro';
 import { site } from '../../site.config';
 
 export async function getStaticPaths() {
-  const items = await getCollection('writing', ({ data }) => !data.draft);
+  const items = await getCollection('writing', ({ data }) => !data.draft && !data.url);
   return items.map((item) => ({ params: { slug: item.id }, props: { item } }));
 }
 

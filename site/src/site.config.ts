@@ -15,6 +15,9 @@ export const site = {
   // Your GitHub profile and this site's repo. Leave empty to hide the links.
   github: 'https://github.com/nramrezmoreale',
   sourceRepo: 'https://github.com/nramrezmoreale/nicolasmoreale.com',
+
+  // Your AWS Builder Center profile, where some of the articles are published. Leave empty to hide.
+  builderCenter: 'https://builder.aws.com/community/@yoyiwatts',
 };
 
 export const nav = [

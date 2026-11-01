@@ -17,12 +17,18 @@ const work = defineCollection({
 });
 
 // Articles. Set draft: true to keep one out of the build.
+// An article published elsewhere has a url and a source, and no body: the site lists it and
+// links out instead of giving it a page of its own.
+// Set featured: false to list an article on /writing/ but keep it off the homepage.
 const writing = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/writing' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
+    url: z.string().url().optional(),
+    source: z.string().optional(),
+    featured: z.boolean().default(true),
     draft: z.boolean().default(false),
   }),
 });
