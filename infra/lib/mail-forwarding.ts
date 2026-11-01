@@ -22,6 +22,11 @@ export interface MailForwardingProps {
   forwardTo: string;
   /** Notified if forwarding starts failing. */
   alerts: sns.ITopic;
+  /**
+   * Other TXT values for the domain itself, such as search-engine ownership checks.
+   * Route 53 allows one TXT record per name, so they share the SPF record.
+   */
+  apexTxt?: string[];
 }
 
 /**
@@ -56,7 +61,10 @@ export class MailForwarding extends Construct {
       zone,
       values: [{ priority: 10, hostName: `inbound-smtp.${stack.region}.amazonaws.com` }],
     });
-    new route53.TxtRecord(this, 'Spf', { zone, values: ['v=spf1 include:amazonses.com ~all'] });
+    new route53.TxtRecord(this, 'Spf', {
+      zone,
+      values: ['v=spf1 include:amazonses.com ~all', ...(props.apexTxt ?? [])],
+    });
     new route53.TxtRecord(this, 'Dmarc', {
       zone,
       recordName: '_dmarc',

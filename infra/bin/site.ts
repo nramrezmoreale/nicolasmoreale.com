@@ -40,6 +40,13 @@ if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(forwardEmailTo)) {
   throw new Error('forwardEmailTo (or alertEmail) must be an email address');
 }
 
+// Search-engine ownership checks (Google Search Console, Bing Webmaster Tools), as the
+// full TXT values, e.g. "google-site-verification=...". They're public, so they live in cdk.json.
+const siteVerification: string[] = app.node.tryGetContext('siteVerification') ?? [];
+if (!Array.isArray(siteVerification) || siteVerification.some((v) => typeof v !== 'string' || !v.includes('='))) {
+  throw new Error('siteVerification must be a list of TXT values like "google-site-verification=..."');
+}
+
 new SiteStack(app, 'PersonalSite', {
   // us-east-2 is this account's home region. The certificate is created in us-east-1
   // from inside the stack (see SiteStack).
@@ -48,6 +55,7 @@ new SiteStack(app, 'PersonalSite', {
   ...config,
   githubRepoIds: githubRepoIds || undefined,
   forwardEmailTo,
+  siteVerification,
 });
 
 cdk.Tags.of(app).add('project', 'personal-site');

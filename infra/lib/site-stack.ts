@@ -29,6 +29,8 @@ export interface SiteStackProps extends cdk.StackProps {
   forwardEmailTo: string;
   /** Monthly cost alert threshold for the whole account, in USD. */
   monthlyBudgetUsd: number;
+  /** Ownership checks for search engines, published as TXT records on the domain. */
+  siteVerification?: string[];
 }
 
 /**
@@ -229,6 +231,7 @@ function handler(event) {
       zone,
       mailbox: 'hello',
       forwardTo: props.forwardEmailTo,
+      apexTxt: props.siteVerification,
       alerts,
     });
 

@@ -12,6 +12,7 @@
     "githubRepo": "nramrezmoreale/nicolasmoreale.com",
     "githubRepoIds": "37057810/1433870736",
     "createGithubOidcProvider": true,
-    "monthlyBudgetUsd": 5
+    "monthlyBudgetUsd": 5,
+    "siteVerification": ["google-site-verification=y8t3Dc0Ub3hUasnhWPMEXcAHw5qwSup-sZ4peXuuXGc"]
   }
 }
