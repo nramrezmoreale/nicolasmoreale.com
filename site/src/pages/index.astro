@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
+import portrait from '../assets/nicolas-moreale.jpg';
 import Base from '../layouts/Base.astro';
 import StackDiagram from '../components/StackDiagram.astro';
 import WorkList from '../components/WorkList.astro';
@@ -101,6 +103,13 @@ const latest = (await getCollection('writing', ({ data }) => !data.draft && data
   <section class="wrap block about" aria-labelledby="about-heading">
     <h2 id="about-heading">Why work with me</h2>
     <div class="about-grid">
+      <Image
+        class="portrait"
+        src={portrait}
+        alt="Nicolás Moreale"
+        widths={[200, 400]}
+        sizes="(min-width: 52rem) 11rem, 7rem"
+      />
       <p>
         I'm a data engineer with a degree in data science. I build AWS data lakes and ETL pipelines that
         pull from databases, files and APIs, clean and validate the data in Glue, and give business teams
@@ -268,9 +277,20 @@ const latest = (await getCollection('writing', ({ data }) => !data.draft && data
     max-width: 36rem;
   }
 
+  .about-grid .portrait {
+    width: 7rem;
+    height: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--rule);
+  }
+
   @media (min-width: 52rem) {
     .about-grid {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 11rem 1fr 1fr;
+    }
+    .about-grid .portrait {
+      width: 11rem;
+      grid-row: span 2;
     }
   }
 </style>

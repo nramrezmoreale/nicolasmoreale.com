@@ -11,6 +11,7 @@ stack:
   - Glue Data Catalog and Athena
   - Amazon QuickSight
   - Amazon CloudWatch
+diagram: data-lake
 ---
 
 ## The situation

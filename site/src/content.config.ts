@@ -12,6 +12,8 @@ const work = defineCollection({
     area: z.enum(['Contact centers', 'Data engineering', 'Cloud infrastructure']),
     order: z.number(),
     stack: z.array(z.string()),
+    /** An architecture diagram shown above the write-up (see src/components/diagrams). */
+    diagram: z.enum(['data-lake']).optional(),
     draft: z.boolean().default(false),
   }),
 });

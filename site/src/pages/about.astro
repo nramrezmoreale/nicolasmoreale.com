@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import portrait from '../assets/nicolas-moreale.jpg';
 import CallToAction from '../components/CallToAction.astro';
 import { site } from '../site.config';
 ---
@@ -16,12 +18,22 @@ import { site } from '../site.config';
     },
   ]}
 >
-  <header class="wrap page-head">
-    <h1>About</h1>
-    <p>
-      I'm Nicolás, an AWS engineer in Buenos Aires. I build data pipelines and data lakes, Amazon
-      Connect contact centers, and the AWS infrastructure they run on.
-    </p>
+  <header class="wrap page-head about-head">
+    <div>
+      <h1>About</h1>
+      <p>
+        I'm Nicolás, an AWS engineer in Buenos Aires. I build data pipelines and data lakes, Amazon
+        Connect contact centers, and the AWS infrastructure they run on.
+      </p>
+    </div>
+    <Image
+      class="portrait"
+      src={portrait}
+      alt="Nicolás Moreale"
+      widths={[240, 480]}
+      sizes="(min-width: 60rem) 15rem, 9rem"
+      loading="eager"
+    />
   </header>
 
   <div class="wrap columns">
@@ -105,6 +117,36 @@ import { site } from '../site.config';
 </Base>
 
 <style>
+  .about-head {
+    display: grid;
+    gap: 1.5rem 3rem;
+  }
+
+  .portrait {
+    order: -1;
+    width: 9rem;
+    height: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--rule);
+  }
+
+  @media (min-width: 40rem) {
+    .about-head {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
+    .portrait {
+      order: 0;
+      width: 11rem;
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .portrait {
+      width: 15rem;
+    }
+  }
+
   .columns {
     display: grid;
     gap: 3rem 4rem;
